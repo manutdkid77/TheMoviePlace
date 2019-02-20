@@ -248,3 +248,6 @@ orleans.codegen.cs
 
 # Backup folder for Package Reference Convert tool in Visual Studio 2017
 MigrationBackup/
+
+# Nlog generated Log Files
+Logs
