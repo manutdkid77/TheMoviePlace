@@ -1,0 +1,36 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+    text-rendering: optimizeLegibility;
+}
+
+a{
+    text-decoration: none;
+}
+
+body{
+    background-color:#F1F1F1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: 'Nunito', sans-serif;
+}
+
+header{
+    display: flex;
+    justify-content: space-between;
+    padding: 1em;
+    background-color: #FFFFFF;
+    box-shadow: 0 0px 10px rgba(0,0,0,0.24);
+}
+
+header ul {
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+}
+
+header ul li{
+    margin: 0 1em;
+}
