@@ -5,8 +5,16 @@
     text-rendering: optimizeLegibility;
 }
 
-a{
+a,
+a:visited{
     text-decoration: none;
+    color: #2c3e50;
+    transition: all .3s ease-in-out;
+}
+
+a:hover,
+a:active{
+    color:tomato;
 }
 
 body{
