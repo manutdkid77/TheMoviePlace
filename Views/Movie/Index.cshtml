@@ -1,0 +1,49 @@
+@model List<TheMoviePlace.Entities.Movie>
+
+@{
+    ViewData["Title"] = "All Movies";
+    string strActors = string.Empty;
+    string strProducers = string.Empty;
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/movies-home.css">
+}
+
+<section>
+    @foreach (var oMovie in Model)
+    {
+        <div class="movie-box">
+
+            <img src="@(oMovie.Poster)" asp-append-version="true"/>
+
+            <div>
+                <div>
+                    <h2>@oMovie.Name</h2>
+                    <h3>@oMovie.YearOfRelease.ToShortDateString()</h3>
+                </div>
+                <div>
+                    <label class="text-bold">Producers: </label>
+
+                   @{
+                       strProducers = string.Join(",",oMovie.Roles.Where(r=>r.RoleReferenceID == 2).Select(p=>p.Person.Name));
+                   }
+                   <label>@strProducers</label>
+                </div>
+                <div>
+                    <label class="text-bold">Stars: </label>
+
+                    @{
+                        strActors = string.Join(",",oMovie.Roles.Where(r=>r.RoleReferenceID == 1).Select(p=>p.Person.Name));
+                    }
+                    <label>@strActors</label>
+                </div>
+
+                <div>
+                    <input type="button" value="Edit" class="btn btn-edit">
+                    <input type="button" value="Delete" class="btn btn-delete">
+                </div>
+            </div>
+        </div>
+    }
+</section>
