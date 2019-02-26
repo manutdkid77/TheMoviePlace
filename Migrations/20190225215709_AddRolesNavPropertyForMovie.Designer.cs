@@ -11,9 +11,10 @@ using TheMoviePlace.Entities;
 namespace TheMoviePlace.Migrations
 {
     [DbContext(typeof(TheMoviePlaceDBContext))]
-    partial class TheMoviePlaceDBContextModelSnapshot : ModelSnapshot
+    [Migration("20190225215709_AddRolesNavPropertyForMovie")]
+    partial class AddRolesNavPropertyForMovie
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
