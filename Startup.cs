@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Serialization;
 using TheMoviePlace.Entities;
 
 namespace TheMoviePlace
@@ -24,7 +25,13 @@ namespace TheMoviePlace
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddMvc().AddJsonOptions(o=>{
+                if (o.SerializerSettings.ContractResolver != null)
+                {
+                    var castedResolver = o.SerializerSettings.ContractResolver as DefaultContractResolver;
+                    castedResolver.NamingStrategy = null;
+                }
+            });
 
             var strDBConnection = ConfigurationSettings["connectionStrings:TheMoviePlaceDBConnectionString"];
             services.AddDbContext<TheMoviePlaceDBContext>(o=>o.UseSqlServer(strDBConnection));
