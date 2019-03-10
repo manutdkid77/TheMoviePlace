@@ -12,11 +12,11 @@
 </head>
 <body>
     <header>
-        <a href="#"><h2>The Movie Place</h2></a>
+        <a asp-controller="Movie" asp-action="Index"><h2>The Movie Place</h2></a>
 
         <ul>
-            <li><a href="#">View Movies</a></li>
-            <li><a href="#">Add a Movie</a></li>
+            <li><a asp-controller="Movie" asp-action="Index">View Movies</a></li>
+            <li><a asp-controller="Movie" asp-action="AddMovie">Add a Movie</a></li>
         </ul>
     </header>
 
