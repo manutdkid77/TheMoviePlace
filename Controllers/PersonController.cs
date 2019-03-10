@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TheMoviePlace.Entities;
+using TheMoviePlace.Helpers;
 
 namespace TheMoviePlace.Controllers {
     public class PersonController : Controller {
@@ -32,7 +33,7 @@ namespace TheMoviePlace.Controllers {
                 return Ok (oPerson);
             } catch (Exception ex) {
                 _loggerService.LogError (ex, ex.Message);
-                return StatusCode (500, "An Error Occured");
+                return StatusCode (500, StringConstants.ProcessingError);
             }
         }
 
@@ -51,7 +52,7 @@ namespace TheMoviePlace.Controllers {
                     return NotFound ();
             } catch (Exception ex) {
                 _loggerService.LogError (ex, ex.Message);
-                return StatusCode (500, "An unexpected error occured");
+                return StatusCode (500, StringConstants.ProcessingError);
             }
         }
     }
