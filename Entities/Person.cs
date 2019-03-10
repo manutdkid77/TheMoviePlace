@@ -11,10 +11,10 @@ namespace TheMoviePlace.Entities
         public int PersonID { get; set; }
 
         [Required]
-        [MaxLength(50)]
+        [MaxLength(50,ErrorMessage="Name can be a maximum number of 200 characters only")]
         public string Name { get; set; }
 
-        [MaxLength(2000)]
+        [MaxLength(2000,ErrorMessage="Bio can be a maximum number of 2000 characters only")]
         public string Bio { get; set; }
 
         [DataType(DataType.Date)]
