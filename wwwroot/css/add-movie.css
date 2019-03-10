@@ -1,0 +1,100 @@
+
+
+form{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin: 0 30%;
+}
+
+form > *{
+    margin-bottom:1em;
+}
+
+form input[type='text'],
+form textarea,
+form select{
+    padding: 0.5em;
+    font-family: inherit;
+}
+
+form textarea{
+    resize: vertical;
+}
+
+#UploadContainer{
+    display: flex;
+    align-items: flex-start;
+
+}
+
+#UploadContainer > input{
+    align-self: center;
+}
+
+#UploadContainer > img{
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+}
+
+#searchbar-container{
+    padding: 0.5em;
+    background: white;
+}
+
+#searchbar-container > div{
+    display: flex;
+}
+#searchbar-container > div > div{
+    margin:0.3em;
+}
+
+#searchbar-container > input{
+    border:2px solid gray;
+    width: 100%;
+}
+
+#searchbar-container > ul{
+    list-style-type: none;
+}
+
+#searchbar-container > ul > li{
+    padding: 0.25em;
+    border-bottom: 1px solid lightgray;
+    cursor: pointer;
+}
+
+#selectedActorsContainer,
+#selectedProducersContainer{
+    list-style-type: none;
+    display: flex;
+    flex-flow: row wrap;
+}
+
+#selectedActorsContainer > li,
+#selectedProducersContainer > li{
+    margin: 0.2em;
+    padding: 0 0.3em;
+    border-radius: 5px;
+}
+
+#selectedActorsContainer > li{
+    background: #7ed6df;
+}
+
+#selectedProducersContainer > li{
+    background:#a29bfe;
+}
+
+#selectedActorsContainer > li > i,
+#selectedProducersContainer > li > i
+{
+    cursor: pointer;
+    color: #d63031;
+}
+
+#btnSubmit{
+    flex: 0 0 38px;
+    align-self: center;
+}

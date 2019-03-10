@@ -1,0 +1,89 @@
+@model TheMoviePlace.Models.AddMovieViewModel
+
+@{
+    ViewData["Title"] = "Add a movie";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/add-movie.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+}
+
+<section>
+
+        <form asp-controller="Movie" asp-action="AddMovie" method="post">
+            <h2>Add a new movie</h2>
+
+            <input asp-for="Name" placeholder="Enter the movie name"/>
+
+            <input asp-for="YearOfRelease" id="dtYearOfRelease" placeholder="Year Of Release"/>
+
+            <textarea asp-for="Plot" type="textarea" placeholder="Plot"></textarea>
+
+            <div id="UploadContainer">
+                <input asp-for="Poster" id="fileImage" accept="image/jpeg,image/png">
+
+                <img id="imgAvatar" src="http://i.pravatar.cc/150?img=13"/>
+            </div>
+
+            <div id="searchbar-container">
+                
+                <label>Search for actors, producers</label>
+                <div>
+                    <div>
+                        <input type="radio" value="1" id="rbtnactor" name="rbtnSearchRole" checked>
+                        <label for='rbtnactor'>Actor</label>
+                    </div>
+                    <div>
+                        <input type="radio" value="2" id="rbtnproducer" name="rbtnSearchRole">
+                        <label for='rbtnproducer'>Producer</label>
+                    </div>
+                </div>
+
+                <input id="txtSearchBar" type="text" placeholder="Type to Search">
+                <ul id="searchbarList">
+                </ul>
+            </div>
+
+            <ul id="selectedActorsContainer">
+            </ul>
+
+            <div id="selectedProducersContainer">
+            </div>
+
+            <button id="btnSubmit" type="submit" class="btn btn-add">Add Movie</button>
+
+        </form>
+
+    </section>
+
+    <section id="addPersonContainer">
+
+        <form asp-controller="Person" asp-action="AddPerson" asp-antiforgery="true">
+            <h2>Add an actor or Producer</h2>
+
+            <input asp-for="NewPerson.Name" type="text" placeholder="Enter name"/>
+
+            <input asp-for="NewPerson.DateOfBirth" id="dtDateOfBirth" type="text" placeholder="Date of birth"/>
+
+            <textarea asp-for="NewPerson.Bio" placeholder="Bio"></textarea>
+                    
+            <select>
+                <option>Actor</option>
+                <option>Producer</option>
+            </select>
+
+            <select>
+                <option>Male</option>
+                <option>Female</option>
+                <option>Other</option>
+            </select>
+        </form>
+    </section>
+
+    @section Scripts{
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr" type="text/javascript"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js" type="text/javascript"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js" type="text/javascript"></script>
+        <script src="~/js/add-movie.js" type="text/javascript"></script>
+    }
