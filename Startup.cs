@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
 using TheMoviePlace.Entities;
+using TheMoviePlace.Services;
 
 namespace TheMoviePlace
 {
@@ -35,6 +36,8 @@ namespace TheMoviePlace
 
             var strDBConnection = ConfigurationSettings["connectionStrings:TheMoviePlaceDBConnectionString"];
             services.AddDbContext<TheMoviePlaceDBContext>(o=>o.UseSqlServer(strDBConnection));
+
+            services.AddTransient<IFileProcessService,FileProcessService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
