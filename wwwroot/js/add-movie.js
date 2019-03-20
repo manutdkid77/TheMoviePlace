@@ -58,6 +58,44 @@ txtSearchBar.addEventListener('keyup', async event => {
     });
 });
 
+$('#formAddPerson').submit(event => {
+    if (!$('#formAddPerson').valid())
+        return;
+    event.preventDefault();
+
+    var form = event.target;
+    var formControls = $(form).find('input,textarea,select');
+    var dataObj = {};
+
+    $(form).serializeArray().map(function (x) {
+        var key = x.name;
+        if (x.name.includes("NewPerson"))
+            key = key.replace("NewPerson.", "");
+
+        dataObj[key] = x.value;
+    });
+
+    $.ajax({
+        url: form.getAttribute('action'),
+        method: form.getAttribute('method'),
+        dataType: "json",
+        data: dataObj,
+        beforeSend:function(){
+            formControls.prop('disabled',true);
+        },
+        success:function(res){
+            console.log("success");
+        },
+        error:function(res,textStatus,ex){
+            console.log("failed");
+        },
+        complete:function(){
+            formControls.prop('disabled',false);
+        }
+    });
+});
+
+
 function CreateTagForPerson(event) {
 
     var personListItem = event.target;

@@ -22,7 +22,7 @@ namespace TheMoviePlace.Entities
 
         [ForeignKey("GenderReferenceID")]
         public GenderReference GenderReference { get; set; }
-
+        [Display(Name="Gender")]
         public int GenderReferenceID { get; set; }
     }
 }

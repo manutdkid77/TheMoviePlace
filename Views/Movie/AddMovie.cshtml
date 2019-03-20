@@ -59,7 +59,7 @@
 
     <section id="addPersonContainer">
 
-        <form asp-controller="Person" asp-action="AddPerson" asp-antiforgery="true">
+        <form id="formAddPerson" asp-controller="Person" asp-action="AddPerson" asp-antiforgery="true" method="post">
             <h2>Add an actor or Producer</h2>
 
             <input asp-for="NewPerson.Name" type="text" placeholder="Enter name"/>
@@ -69,15 +69,17 @@
             <textarea asp-for="NewPerson.Bio" placeholder="Bio"></textarea>
                     
             <select>
-                <option>Actor</option>
-                <option>Producer</option>
+                <option value="1">Actor</option>
+                <option value="2">Producer</option>
             </select>
 
-            <select>
-                <option>Male</option>
-                <option>Female</option>
-                <option>Other</option>
+            <select asp-for="NewPerson.GenderReferenceID">
+                <option value="1">Male</option>
+                <option value="2">Female</option>
+                <option value="3">Other</option>
             </select>
+
+            <input id="btnSubmit" type="submit" class="btn btn-add" value="Add">
         </form>
     </section>
 
