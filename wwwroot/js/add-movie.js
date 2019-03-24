@@ -11,7 +11,6 @@ var txtSearchBar = document.getElementById('txtSearchBar');
 var searchbarList = document.getElementById('searchbarList');
 var selectedActorsContainer = document.getElementById('selectedActorsContainer');
 var selectedProducersContainer = document.getElementById('selectedProducersContainer');
-var rbtnSearchRoleActor = document.querySelectorAll("input[name='rbtnSearchRole']")[0];
 var request;
 
 fileImage.addEventListener('change', () => {
@@ -46,7 +45,7 @@ txtSearchBar.addEventListener('keyup', async event => {
             arrPeople.forEach(item => {
                 var elPerson = document.createElement('li');
                 elPerson.innerText = item.Name;
-                elPerson.setAttribute('data-id', item.PersonID);
+                elPerson.setAttribute('data-id', item.PersonID.toString());
                 elPerson.addEventListener('click', CreateTagForPerson);
 
                 searchbarList.appendChild(elPerson);
@@ -125,37 +124,22 @@ function CreateTagForPerson(event) {
     listElmnt.appendChild(inputElmnt);
     listElmnt.appendChild(closeBtn);
 
-    if (rbtnSearchRoleActor.checked) {
+    var targetList = getTargetList(iRoleReferenceID);
 
-        var listCount = selectedActorsContainer.getElementsByTagName('li').length;
+    if (!targetList)
+        return;
 
-        listElmnt.setAttribute('data-roleReferenceID', 1);
-        inputElmnt.name = `Actors[${listCount}].PersonID`;
-        selectedActorsContainer.appendChild(listElmnt);
-    }
-    else {
+    listElmnt.setAttribute('data-roleReferenceID', iRoleReferenceID);
+    targetList.appendChild(listElmnt);
 
-        var listCount = selectedProducersContainer.getElementsByTagName('li').length;
-
-        listElmnt.setAttribute('data-roleReferenceID', 2);
-        inputElmnt.name = `Producers[${listCount}].PersonID`;
-        selectedProducersContainer.appendChild(listElmnt);
-    }
+    createNameAttribute(iRoleReferenceID, targetList, targetList.getAttribute('data-listType'));
 }
 
 function CheckIfPersonExists(roleReferenceID, iPersonID) {
-    var targetList;
+    var targetList = getTargetList(roleReferenceID);
 
-    switch (roleReferenceID) {
-        case "1":
-            targetList = selectedActorsContainer;
-            break;
-        case "2":
-            targetList = selectedProducersContainer;
-            break;
-        default:
-            break;
-    }
+    if (!targetList)
+        return;
 
     if (targetList.getElementsByTagName('input').length == 0)
         return;
@@ -174,18 +158,37 @@ function closeBtnClicked(event) {
 }
 
 function RemovePerson(listItem, roleReferenceID) {
+    var targetList = getTargetList(roleReferenceID);
+
+    if (!targetList)
+        return;
+
+    targetList.removeChild(listItem);
+
+    createNameAttribute(roleReferenceID, targetList, targetList.getAttribute('data-listType'));
+}
+
+function getTargetList(roleReferenceID) {
+    var targetList;
+
     switch (roleReferenceID) {
         case "1":
-            selectedActorsContainer.removeChild(listItem);
+            targetList = selectedActorsContainer;
             break;
-
         case "2":
-            selectedProducersContainer.removeChild(listItem);
+            targetList = selectedProducersContainer;
             break;
-
         default:
             break;
     }
+    return targetList;
+}
+
+function createNameAttribute(roleReferenceID, targetList, listType) {
+    targetList = Array.from(targetList.getElementsByTagName('input'));
+    targetList.forEach((item, i) => {
+        item.setAttribute('name', `${listType}[${i}].PersonID`);
+    })
 }
 
 function applyImageToAvatar(input) {
