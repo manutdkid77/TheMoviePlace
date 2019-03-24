@@ -19,8 +19,8 @@ namespace TheMoviePlace.Models
         [MaxLength(255,ErrorMessage="The Plot can be a maximum no of 255 characters only")]
         public string Plot { get; set; }
         public IFormFile Poster { get; set; }
-        public List<Person> Actors { get; set; } = new List<Person>();
-        public List<Person> Producers { get; set; } = new List<Person>();
+        public List<int> Actors { get; set; } = new List<int>();
+        public List<int> Producers { get; set; } = new List<int>();
 
         public Person NewPerson { get; set; }
     }

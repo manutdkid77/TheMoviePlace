@@ -187,7 +187,7 @@ function getTargetList(roleReferenceID) {
 function createNameAttribute(roleReferenceID, targetList, listType) {
     targetList = Array.from(targetList.getElementsByTagName('input'));
     targetList.forEach((item, i) => {
-        item.setAttribute('name', `${listType}[${i}].PersonID`);
+        item.setAttribute('name', `${listType}[${i}]`);
     })
 }
 
