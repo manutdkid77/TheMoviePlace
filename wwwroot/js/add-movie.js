@@ -11,6 +11,7 @@ var txtSearchBar = document.getElementById('txtSearchBar');
 var searchbarList = document.getElementById('searchbarList');
 var selectedActorsContainer = document.getElementById('selectedActorsContainer');
 var selectedProducersContainer = document.getElementById('selectedProducersContainer');
+var imgAvatarRemove = document.getElementById('imgAvatarRemove');
 var request;
 
 fileImage.addEventListener('change', () => {
@@ -56,6 +57,11 @@ txtSearchBar.addEventListener('keyup', async event => {
         }
     });
 });
+
+imgAvatarRemove.addEventListener('click',event =>{
+    fileImage.value = '';
+    event.target.previousElementSibling.src = '/images/user_profile_picture.png';
+})
 
 $('#formAddPerson').submit(event => {
     if (!$('#formAddPerson').valid())
