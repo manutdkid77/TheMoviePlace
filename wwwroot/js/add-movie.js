@@ -47,7 +47,16 @@ txtSearchBar.addEventListener('keyup', async event => {
                 var elPerson = document.createElement('li');
                 elPerson.innerText = item.Name;
                 elPerson.setAttribute('data-id', item.PersonID.toString());
-                elPerson.addEventListener('click', CreateTagForPerson);
+                elPerson.addEventListener('click', event => {
+
+                    var personListItem = event.target;
+                    if (!personListItem)
+                        return;
+
+                    var iRoleReferenceID = document.querySelector("input[name='rbtnSearchRole']:checked").value;
+
+                    CreateTagForPerson(personListItem.getAttribute('data-id'), iRoleReferenceID, personListItem.innerText)
+                });
 
                 searchbarList.appendChild(elPerson);
             });
@@ -58,7 +67,7 @@ txtSearchBar.addEventListener('keyup', async event => {
     });
 });
 
-imgAvatarRemove.addEventListener('click',event =>{
+imgAvatarRemove.addEventListener('click', event => {
     fileImage.value = '';
     event.target.previousElementSibling.src = '/images/user_profile_picture.png';
 })
@@ -85,43 +94,36 @@ $('#formAddPerson').submit(event => {
         method: form.getAttribute('method'),
         dataType: "json",
         data: dataObj,
-        beforeSend:function(){
-            formControls.prop('disabled',true);
+        beforeSend: function () {
+            formControls.prop('disabled', true);
         },
-        success:function(res){
+        success: function (res) {
             console.log("success");
         },
-        error:function(res,textStatus,ex){
+        error: function (res, textStatus, ex) {
             console.log("failed");
         },
-        complete:function(){
-            formControls.prop('disabled',false);
+        complete: function () {
+            formControls.prop('disabled', false);
         }
     });
 });
 
 
-function CreateTagForPerson(event) {
+function CreateTagForPerson(iPersonID, iRoleReferenceID, strName) {
 
-    var personListItem = event.target;
-
-    if (!personListItem)
-        return;
-
-    var iRoleReferenceID = document.querySelector("input[name='rbtnSearchRole']:checked").value;
-
-    var bPersonExists = CheckIfPersonExists(iRoleReferenceID, personListItem.getAttribute('data-id'));
+    var bPersonExists = CheckIfPersonExists(iRoleReferenceID, iPersonID);
 
     if (bPersonExists)
         return;
 
     var listElmnt = document.createElement('li');
-    listElmnt.innerText = personListItem.innerText;
+    listElmnt.innerText = strName;
 
     var inputElmnt = document.createElement('input');
     inputElmnt.type = 'hidden';
-    inputElmnt.setAttribute('data-id', personListItem.getAttribute('data-id'));
-    inputElmnt.value = personListItem.getAttribute('data-id');
+    inputElmnt.setAttribute('data-id', iPersonID);
+    inputElmnt.value = iPersonID;
 
     var closeBtn = document.createElement('i');
     closeBtn.innerText = 'x';
@@ -138,7 +140,7 @@ function CreateTagForPerson(event) {
     listElmnt.setAttribute('data-roleReferenceID', iRoleReferenceID);
     targetList.appendChild(listElmnt);
 
-    createNameAttribute(iRoleReferenceID, targetList, targetList.getAttribute('data-listType'));
+    createNameAttribute(targetList, targetList.getAttribute('data-listType'));
 }
 
 function CheckIfPersonExists(roleReferenceID, iPersonID) {
@@ -171,7 +173,7 @@ function RemovePerson(listItem, roleReferenceID) {
 
     targetList.removeChild(listItem);
 
-    createNameAttribute(roleReferenceID, targetList, targetList.getAttribute('data-listType'));
+    createNameAttribute(targetList, targetList.getAttribute('data-listType'));
 }
 
 function getTargetList(roleReferenceID) {
@@ -190,7 +192,7 @@ function getTargetList(roleReferenceID) {
     return targetList;
 }
 
-function createNameAttribute(roleReferenceID, targetList, listType) {
+function createNameAttribute(targetList, listType) {
     targetList = Array.from(targetList.getElementsByTagName('input'));
     targetList.forEach((item, i) => {
         item.setAttribute('name', `${listType}[${i}]`);
