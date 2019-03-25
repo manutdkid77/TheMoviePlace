@@ -12,6 +12,7 @@ var searchbarList = document.getElementById('searchbarList');
 var selectedActorsContainer = document.getElementById('selectedActorsContainer');
 var selectedProducersContainer = document.getElementById('selectedProducersContainer');
 var imgAvatarRemove = document.getElementById('imgAvatarRemove');
+var selNewPerson = document.getElementById('selNewPerson');
 var request;
 
 fileImage.addEventListener('change', () => {
@@ -97,8 +98,8 @@ $('#formAddPerson').submit(event => {
         beforeSend: function () {
             formControls.prop('disabled', true);
         },
-        success: function (res) {
-            console.log("success");
+        success: function (oPerson) {
+            CreateTagForPerson(oPerson.PersonID,selNewPerson.value,oPerson.Name);
         },
         error: function (res, textStatus, ex) {
             console.log("failed");
