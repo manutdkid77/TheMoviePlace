@@ -19,6 +19,9 @@ section{
 .movie-box > img{
     width:75px;
     margin-right: 1em;
+    border:1px solid #34495e;
+    border-radius: 50%;
+    padding: 0.3em;
 }
 .movie-box > div{
     flex: 1;
