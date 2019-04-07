@@ -24,7 +24,12 @@ namespace TheMoviePlace.Controllers {
         public async Task<IActionResult> Index () {
 
             try {
-                var lstMovies = await _TheMoviePlaceDBContext.Movies.Include (movie => movie.Roles).ThenInclude (role => role.Person).ToListAsync ();
+                var lstMovies = await _TheMoviePlaceDBContext.Movies.Include (movie => movie.Roles).ThenInclude (role => role.Person).Select (m => new Movie () {
+                    Name = m.Name,
+                        YearOfRelease = m.YearOfRelease,
+                        Roles = m.Roles,
+                        Poster = string.IsNullOrEmpty (m.Poster) ? Path.Combine (StringConstants.DefaultImagesFolder, StringConstants.MovieNoImageName) : Path.Combine (StringConstants.FileUploadFolder, m.Poster)
+                }).AsNoTracking ().ToListAsync ();
 
                 if (lstMovies.Count () == 0)
                     return NotFound ();
@@ -38,8 +43,8 @@ namespace TheMoviePlace.Controllers {
 
         [ValidateAntiForgeryToken]
         [HttpPost]
-        [RequestSizeLimit(5000000)]
-        public async Task<IActionResult> AddMovie ([FromForm]AddMovieViewModel oAddMovieModel) {
+        [RequestSizeLimit (5000000)]
+        public async Task<IActionResult> AddMovie ([FromForm] AddMovieViewModel oAddMovieModel) {
             try {
                 var strFileName = string.Empty;
 
