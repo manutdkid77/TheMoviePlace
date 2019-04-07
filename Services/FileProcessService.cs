@@ -51,7 +51,7 @@ namespace TheMoviePlace.Services {
 
             try {
 
-                var filePath = Path.Combine (_hostingEnvironment.ContentRootPath, StringConstants.FileUploadFolder, strFileName);
+                var filePath = Path.Combine (_hostingEnvironment.WebRootPath, StringConstants.FileUploadFolder, strFileName);
 
                 using (var stream = new FileStream (filePath, FileMode.Create)) {
                     await filePoster.CopyToAsync (stream);

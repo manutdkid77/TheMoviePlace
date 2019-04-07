@@ -11,5 +11,9 @@ namespace TheMoviePlace.Helpers
         public static string FileProcessingError = "There was an error processing the file, please try again";
 
         public static string FileUploadFolder = "Uploads";
+
+        public static string DefaultImagesFolder = "images";
+
+        public static string MovieNoImageName = "movie_noimage.png";
     }
 }
