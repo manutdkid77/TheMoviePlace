@@ -70,7 +70,7 @@ txtSearchBar.addEventListener('keyup', async event => {
 
 imgAvatarRemove.addEventListener('click', event => {
     fileImage.value = '';
-    event.target.previousElementSibling.src = '/images/user_profile_picture.png';
+    event.target.previousElementSibling.src = '/images/movie_noimage.png';
 })
 
 $('#formAddPerson').submit(event => {
