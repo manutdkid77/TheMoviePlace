@@ -54,17 +54,7 @@ txtSearchBar.addEventListener('keyup', async event => {
                 var elPerson = document.createElement('li');
                 elPerson.innerText = item.Name;
                 elPerson.setAttribute('data-id', item.PersonID.toString());
-                elPerson.addEventListener('click', event => {
-
-                    var personListItem = event.target;
-                    if (!personListItem)
-                        return;
-
-                    var iRoleReferenceID = document.querySelector("input[name='rbtnSearchRole']:checked").value;
-
-                    CreateTagForPerson(personListItem.getAttribute('data-id'), iRoleReferenceID, personListItem.innerText)
-                });
-
+                elPerson.addEventListener('click', searchListItemClicked);
                 searchbarList.appendChild(elPerson);
             });
         },
@@ -120,6 +110,16 @@ $('#formAddPerson').submit(event => {
         }
     });
 });
+
+function searchListItemClicked(event){
+    var personListItem = event.target;
+    if (!personListItem)
+        return;
+
+    var iRoleReferenceID = document.querySelector("input[name='rbtnSearchRole']:checked").value;
+
+    CreateTagForPerson(personListItem.getAttribute('data-id'), iRoleReferenceID, personListItem.innerText)
+}
 
 
 function CreateTagForPerson(iPersonID, iRoleReferenceID, strName) {
