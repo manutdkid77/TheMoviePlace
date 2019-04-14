@@ -81,6 +81,26 @@ namespace TheMoviePlace.Controllers
             }
         }
 
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public async Task<IActionResult> AddRoleToMovie(AddRoleDTO oAddRoleDTO){
+            try{
+                if(!ModelState.IsValid)
+                    return BadRequest();
+
+                var bAddResult = await AddRoleToMovieAsync(oAddRoleDTO.MovieID,oAddRoleDTO.PersonID,oAddRoleDTO.RoleReferenceID);
+
+                if(!bAddResult)
+                    return NotFound();
+                
+                return Ok();
+            }
+            catch(Exception ex){
+                _loggerService.LogError(ex,ex.Message);
+                return StatusCode(500, StringConstants.ProcessingError);
+            }
+        }
+
         private async Task<bool> AddRoleToMovieAsync(int iMovieID, int iPersonID, int iRoleReferenceID){
             var oMovie = await _TheMoviePlaceDBContext.Roles.FirstOrDefaultAsync (r => r.MovieID == iMovieID);
 

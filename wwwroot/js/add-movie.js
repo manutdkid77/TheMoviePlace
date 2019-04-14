@@ -117,10 +117,34 @@ function searchListItemClicked(event){
         return;
 
     var iRoleReferenceID = document.querySelector("input[name='rbtnSearchRole']:checked").value;
+    var iPersonID = personListItem.getAttribute('data-id');
 
-    CreateTagForPerson(personListItem.getAttribute('data-id'), iRoleReferenceID, personListItem.innerText)
+    var bTagCreated = CreateTagForPerson(iPersonID, iRoleReferenceID, personListItem.innerText);
+
+    if(bTagCreated && iMovieID)
+        AddRoleToMovie(iPersonID,iMovieID,iRoleReferenceID);
 }
 
+function AddRoleToMovie(iPersonID, iMovieID, iRoleReferenceID){
+
+    var dataObj = {"PersonID":iPersonID,"MovieID":iMovieID,"RoleReferenceID":iRoleReferenceID};
+    var forgTk = document.querySelector("input[name='__RequestVerificationToken']").value;
+
+    $.ajax({
+        url:'/Person/AddRoleToMovie',
+        method:'POST',  
+        headers: {
+            'RequestVerificationToken':forgTk,
+        },
+        data:dataObj,
+        success:function(){
+            console.log('success');
+        },
+        error:function(){
+            console.log('error');
+        }
+    })
+}
 
 function CreateTagForPerson(iPersonID, iRoleReferenceID, strName) {
 
@@ -153,6 +177,8 @@ function CreateTagForPerson(iPersonID, iRoleReferenceID, strName) {
     targetList.appendChild(listElmnt);
 
     createNameAttribute(targetList, targetList.getAttribute('data-listType'));
+
+    return true;
 }
 
 function CheckIfPersonExists(roleReferenceID, iPersonID) {
