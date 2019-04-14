@@ -101,6 +101,27 @@ namespace TheMoviePlace.Controllers
             }
         }
 
+        public async Task<IActionResult> RemoveRoleFromMovie(RemoveRoleDTO oRemoveRoleDTO){
+            try{
+                if(!ModelState.IsValid)
+                    return BadRequest();
+
+                var oRole = await _TheMoviePlaceDBContext.Roles.FirstOrDefaultAsync(r=>r.MovieID == oRemoveRoleDTO.MovieID && r.PersonID == oRemoveRoleDTO.PersonID && r.RoleReferenceID == oRemoveRoleDTO.RoleReferenceID);
+
+                if(oRole is null)
+                    return NotFound();
+
+                _TheMoviePlaceDBContext.Roles.Remove(oRole);
+                await _TheMoviePlaceDBContext.SaveChangesAsync();
+                
+                return Ok();
+            }
+            catch(Exception ex){
+                _loggerService.LogError(ex,ex.Message);
+                return StatusCode(500, StringConstants.ProcessingError);
+            }
+        }
+
         private async Task<bool> AddRoleToMovieAsync(int iMovieID, int iPersonID, int iRoleReferenceID){
             var oMovie = await _TheMoviePlaceDBContext.Roles.FirstOrDefaultAsync (r => r.MovieID == iMovieID);
 

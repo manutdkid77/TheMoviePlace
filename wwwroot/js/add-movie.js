@@ -199,8 +199,12 @@ function CheckIfPersonExists(roleReferenceID, iPersonID) {
 
 function closeBtnClicked(event) {
     var listItem = event.target.parentNode;
-    var roleReferenceID = listItem.getAttribute('data-roleReferenceID');
-    RemovePerson(listItem, roleReferenceID)
+    var iRoleReferenceID = listItem.getAttribute('data-roleReferenceID');
+    RemovePerson(listItem, iRoleReferenceID);
+    var iPersonID = listItem.children[0].getAttribute('data-id');
+
+    if(iMovieID)
+        RemoveRoleFromMovie(iPersonID,iMovieID,iRoleReferenceID);
 }
 
 function RemovePerson(listItem, roleReferenceID) {
@@ -212,6 +216,27 @@ function RemovePerson(listItem, roleReferenceID) {
     targetList.removeChild(listItem);
 
     createNameAttribute(targetList, targetList.getAttribute('data-listType'));
+}
+
+function RemoveRoleFromMovie(iPersonID, iMovieID, iRoleReferenceID){
+
+    var dataObj = {"PersonID":iPersonID,"MovieID":iMovieID,"RoleReferenceID":iRoleReferenceID};
+    var forgTk = document.querySelector("input[name='__RequestVerificationToken']").value;
+
+    $.ajax({
+        url:'/Person/RemoveRoleFromMovie',
+        method:'POST',
+        headers:{
+            'RequestVerificationToken':forgTk
+        },
+        data:dataObj,
+        success:function(){
+            console.log('success');
+        },
+        error:function(){
+            console.log('error');
+        }
+    });
 }
 
 function getTargetList(roleReferenceID) {
