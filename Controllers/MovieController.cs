@@ -111,5 +111,32 @@ namespace TheMoviePlace.Controllers {
             await _TheMoviePlaceDBContext.AddRangeAsync (lstRoles);
             await _TheMoviePlaceDBContext.SaveChangesAsync ();
         }
+
+        public async Task<IActionResult> EditMovie(int? MovieID){
+            try{
+                if(MovieID is null)
+                    return NotFound();
+                
+                var oMovie = await _TheMoviePlaceDBContext.Movies.Include(r => r.Roles).ThenInclude(p => p.Person).AsNoTracking().FirstOrDefaultAsync(m => m.MovieID == MovieID);
+
+                if(oMovie is null)
+                    return NotFound();
+                
+                var oEditViewModel = new EditMovieViewModel()
+                {
+                    Name = oMovie.Name,
+                    PosterUrl = oMovie.Poster,
+                    Plot = oMovie.Plot,
+                    YearOfRelease = oMovie.YearOfRelease,
+                    Roles = oMovie.Roles
+                };
+
+                return View(oEditViewModel);
+            }
+            catch(Exception ex){
+                _loggerService.LogError(ex,ex.Message);
+                return View();
+            }
+        }
     }
 }
