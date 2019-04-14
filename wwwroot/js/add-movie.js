@@ -14,6 +14,12 @@ var selectedProducersContainer = document.getElementById('selectedProducersConta
 var imgAvatarRemove = document.getElementById('imgAvatarRemove');
 var selNewPerson = document.getElementById('selNewPerson');
 var request;
+var iMovieID = '';
+
+var queryParams = (new URL(document.location)).searchParams;
+var iMovieQueryParam = queryParams.get("MovieID");
+if (iMovieQueryParam)
+    iMovieID = iMovieQueryParam;
 
 fileImage.addEventListener('change', () => {
     applyImageToAvatar(fileImage);
@@ -90,6 +96,11 @@ $('#formAddPerson').submit(event => {
         dataObj[key] = x.value;
     });
 
+    if(iMovieID)
+        dataObj.MovieID = iMovieID;
+    
+    dataObj.RoleReferenceID = selNewPerson.value;
+
     $.ajax({
         url: form.getAttribute('action'),
         method: form.getAttribute('method'),
@@ -99,7 +110,7 @@ $('#formAddPerson').submit(event => {
             formControls.prop('disabled', true);
         },
         success: function (oPerson) {
-            CreateTagForPerson(oPerson.PersonID,selNewPerson.value,oPerson.Name);
+            CreateTagForPerson(oPerson.PersonID, selNewPerson.value, oPerson.Name);
         },
         error: function (res, textStatus, ex) {
             console.log("failed");

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TheMoviePlace.Entities;
 using TheMoviePlace.Helpers;
+using TheMoviePlace.Models;
 
 namespace TheMoviePlace.Controllers
 {
@@ -21,19 +22,32 @@ namespace TheMoviePlace.Controllers
 
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public async Task<IActionResult> AddPerson([Bind("Name", "Bio", "DateOfBirth", "GenderReferenceID")]Person oPerson)
+        public async Task<IActionResult> AddPerson([Bind("Name", "Bio", "DateOfBirth", "GenderReferenceID","MovieID","RoleReferenceID")]AddPersonDTO oAddPersonDTO)
         {
             try
             {
-                if (oPerson is null)
+                if (oAddPersonDTO is null)
                     return BadRequest();
 
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 
-                _TheMoviePlaceDBContext.Persons.Add(oPerson);
+                var oPerson = new Person(){
+                    Name = oAddPersonDTO.Name,
+                    Bio = oAddPersonDTO.Bio,
+                    DateOfBirth = oAddPersonDTO.DateOfBirth,
+                    GenderReferenceID = oAddPersonDTO.GenderReferenceID
+                };
 
+                await _TheMoviePlaceDBContext.Persons.AddAsync(oPerson);
                 await _TheMoviePlaceDBContext.SaveChangesAsync();
+                
+                if(oAddPersonDTO.MovieID != 0){
+                    var bAddResult = await AddRoleToMovieAsync(oAddPersonDTO.MovieID,oPerson.PersonID,oAddPersonDTO.RoleReferenceID);
+                    
+                    if(!bAddResult)
+                        return NotFound();
+                }
 
                 return Ok(oPerson);
             }
@@ -65,6 +79,23 @@ namespace TheMoviePlace.Controllers
                 _loggerService.LogError(ex, ex.Message);
                 return StatusCode(500, StringConstants.ProcessingError);
             }
+        }
+
+        private async Task<bool> AddRoleToMovieAsync(int iMovieID, int iPersonID, int iRoleReferenceID){
+            var oMovie = await _TheMoviePlaceDBContext.Roles.FirstOrDefaultAsync (r => r.MovieID == iMovieID);
+
+            if (oMovie is null)
+                return false;
+
+            await _TheMoviePlaceDBContext.Roles.AddAsync (new Role () {
+                MovieID = iMovieID,
+                    PersonID = iPersonID,
+                    RoleReferenceID = iRoleReferenceID
+            });
+
+            await _TheMoviePlaceDBContext.SaveChangesAsync ();
+
+            return true;
         }
     }
 }
