@@ -1,8 +1,8 @@
 $('#dtYearOfRelease').flatpickr({
-    dateFormat: "d-m-Y",
+    dateFormat: "Y-m-d",
 });
 $('#dtDateOfBirth').flatpickr({
-    dateFormat: "d-m-Y",
+    dateFormat: "Y-m-d",
 });
 
 var fileImage = document.getElementById('fileImage');
