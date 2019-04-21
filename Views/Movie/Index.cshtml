@@ -40,8 +40,8 @@
                 </div>
 
                 <div>
-                    <input type="button" value="Edit" class="btn btn-edit">
-                    <input type="button" value="Delete" class="btn btn-delete">
+                    <a asp-action="EditMovie" asp-route-MovieID="@oMovie.MovieID" type="button" class="btn btn-edit">Edit</a>
+                    <a type="button" class="btn btn-delete" href="#">Delete</a>
                 </div>
             </div>
         </div>

@@ -26,6 +26,7 @@ namespace TheMoviePlace.Controllers {
             try {
                 var lstMovies = await _TheMoviePlaceDBContext.Movies.Include (movie => movie.Roles).ThenInclude (role => role.Person).Select (m => new Movie () {
                     Name = m.Name,
+                        MovieID = m.MovieID,
                         YearOfRelease = m.YearOfRelease,
                         Roles = m.Roles,
                         Poster = string.IsNullOrEmpty (m.Poster) ? Path.Combine (StringConstants.DefaultImagesFolder, StringConstants.MovieNoImageName) : Path.Combine (StringConstants.FileUploadFolder, m.Poster)
@@ -124,6 +125,7 @@ namespace TheMoviePlace.Controllers {
                 
                 var oEditViewModel = new EditMovieViewModel()
                 {
+                    MovieID = oMovie.MovieID,
                     Name = oMovie.Name,
                     PosterUrl = oMovie.Poster,
                     Plot = oMovie.Plot,
