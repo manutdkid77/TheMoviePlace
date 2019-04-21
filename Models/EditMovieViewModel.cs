@@ -9,6 +9,8 @@ namespace TheMoviePlace.Models
 {
     public class EditMovieViewModel
     {
+        public int MovieID { get; set; }
+
         [Required]
         [MaxLength(200,ErrorMessage="Name can be a maximum number of 200 characters only")]
         public string Name { get; set; }

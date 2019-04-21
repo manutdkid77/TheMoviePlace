@@ -140,5 +140,51 @@ namespace TheMoviePlace.Controllers {
                 return View();
             }
         }
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        [RequestSizeLimit (5000000)]
+        public async Task<IActionResult> EditMovie([FromForm] EditMovieViewModel oEditMovieModel){
+            try{
+                var strFileName = string.Empty;
+
+                if (oEditMovieModel is null || oEditMovieModel.MovieID <=0)
+                    return BadRequest ();
+
+                if (!ModelState.IsValid)
+                    return BadRequest (ModelState);
+
+                var oMovie = await _TheMoviePlaceDBContext.Movies.FirstOrDefaultAsync(m=>m.MovieID ==oEditMovieModel.MovieID);
+
+                oMovie.Name = oEditMovieModel.Name;
+                oMovie.Plot = oEditMovieModel.Plot;
+                oMovie.YearOfRelease = oEditMovieModel.YearOfRelease;
+
+                if (oEditMovieModel.Poster != null) {
+
+                    _fileProcessService.ProcessFormFile (oEditMovieModel.Poster, ModelState);
+
+                    if (!ModelState.IsValid)
+                        return BadRequest (ModelState);
+
+                    strFileName = string.IsNullOrEmpty(oMovie.Poster) ? Guid.NewGuid().ToString() + _fileProcessService.GetFileExtension (oEditMovieModel.Poster.FileName) : oMovie.Poster;
+
+                    await _fileProcessService.UploadFile (oEditMovieModel.Poster, strFileName, ModelState);
+
+                    if (!ModelState.IsValid)
+                        return BadRequest (ModelState);
+                    
+                    oMovie.Poster = strFileName;
+                }
+
+                await _TheMoviePlaceDBContext.SaveChangesAsync ();
+                
+                return RedirectToAction(nameof(Index));
+            }
+            catch(Exception ex){
+                _loggerService.LogError(ex,ex.Message);
+                return View();
+            }
+        }
     }
 }
