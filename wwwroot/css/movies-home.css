@@ -22,6 +22,7 @@ section{
     border:1px solid #34495e;
     border-radius: 50%;
     padding: 0.3em;
+    height: 75px;
 }
 .movie-box > div{
     flex: 1;
